@@ -15,7 +15,8 @@
   ],
   "rules": {
     "no-console": "warn",
-    "@typescript-eslint/explicit-module-boundary-types": "off"
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "no-var": "off"
   },
   "globals": {
     "React": true,

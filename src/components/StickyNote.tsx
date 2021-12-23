@@ -1,10 +1,8 @@
 import React from 'react';
+import type { Note } from '@prisma/client';
 
 type StickyProps = {
-  note: {
-    preview: string;
-    content: string;
-  };
+  note: Pick<Note, 'preview'> & Partial<Note>;
 };
 
 export default function StickyNote({ note }: StickyProps) {
