@@ -1,13 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../lib/db';
+import prisma from '../../../lib/db';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === 'GET') {
-    const notes = await prisma.note.findMany();
+    const approved = req.query.approved ?? true;
+    const notes = await prisma.note.findMany({
+      where: { approved: JSON.parse(approved as string) },
+    });
 
     return res.json(
       notes.map((entry) => ({
@@ -21,9 +24,9 @@ export default async function handler(
   if (req.method === 'POST') {
     const newEntry = await prisma.note.create({
       data: {
-        preview: req.body.body.preview,
-        content: req.body.body.content,
-        canvas: req.body.body.canvas,
+        preview: req.body.preview,
+        content: req.body.content,
+        canvas: req.body.canvas,
       },
     });
 

@@ -13,7 +13,7 @@ export default function NewNote() {
 
     const res = await fetch('/api/notes', {
       body: JSON.stringify({
-        body: note,
+        ...note,
       }),
       headers: {
         'Content-Type': 'application/json',

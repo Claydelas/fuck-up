@@ -16,4 +16,5 @@ model Note {
   preview String
   content String?
   canvas String?
+  approved Boolean @default(false)
 }
