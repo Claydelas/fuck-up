@@ -2,8 +2,12 @@ module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      lineClamp: {
-        note: '8',
+      colors: {
+        'pastel-yellow': '#f9f2b6',
+        'pastel-pink': '#facfe2',
+      },
+      fontFamily: {
+        note: 'Reenie Beanie',
       },
     },
   },

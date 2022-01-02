@@ -15,8 +15,13 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang='en'>
-        <Head />
-        <body className='min-h-screen'>
+        <Head>
+          <link
+            href='https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap'
+            rel='stylesheet'
+          />
+        </Head>
+        <body>
           <Main />
           <NextScript />
         </body>
