@@ -7,7 +7,7 @@ import type { Note } from '@prisma/client';
 
 function Home({ notes }: { notes: Note[] }) {
   return (
-    <div className='max-w-4xl mx-auto flex items-center flex-col gap-10'>
+    <div className='flex items-center flex-col gap-10 py-10'>
       <Seo />
       <div className='w-full grid grid-cols-[repeat(auto-fit,_minmax(13rem,_max-content))] justify-center gap-5'>
         {process.env.NODE_ENV !== 'production'

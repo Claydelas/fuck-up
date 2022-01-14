@@ -14,7 +14,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang='en'>
+      <Html lang='en' className='bg-[#202023]'>
         <Head>
           <link
             href='https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap'

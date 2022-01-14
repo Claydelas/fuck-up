@@ -1,14 +1,31 @@
 import Seo from '../components/Seo';
-import type { OptionalNote } from '../components/StickyNote';
-import { useState } from 'react';
-import Router from 'next/router';
+//import type { OptionalNote } from '../components/StickyNote';
+import { useRef, useCallback } from 'react';
+//import Router from 'next/router';
+import dynamic from 'next/dynamic';
+import { TldrawApp, TldrawProps } from '@claydelas/tldraw';
+
+// Disable SSR for drawing component
+const Draw = dynamic<TldrawProps>(
+  () => import('@claydelas/tldraw').then((m) => m.Tldraw),
+  { ssr: false }
+);
+
 //import useSWR, { useSWRConfig } from 'swr';
 
 export default function NewNote() {
   //const { mutate } = useSWRConfig();
-  const [note, setNote] = useState<OptionalNote>({ preview: '' });
+  //const [note] = useState<OptionalNote>({ preview: '' });
+
+  const board = useRef<TldrawApp>();
+  //board.current.string
+
+  const handleMount = useCallback((app: TldrawApp) => {
+    board.current = app;
+  }, []);
+
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  const submitNote = async (e: any) => {
+  /*const submitNote = async (e: any) => {
     e.preventDefault();
 
     const res = await fetch('/api/notes', {
@@ -26,41 +43,29 @@ export default function NewNote() {
       return;
     }
     //mutate('/api/notes');
-    Router.push('/success');
-  };
+    Router.push('/');
+  }; */
 
   return (
-    <div className='max-w-4xl mx-auto flex items-center justify-center flex-col gap-10 text-white'>
+    <div className='flex flex-col gap-5'>
       <Seo />
-      <h1 className='text-4xl'>How did you fuck up?</h1>
-      <div className='bg-yellow-500 h-60 w-52 border-2 border-white'>
-        <div className='m-5'>
-          <textarea
-            className='h-[12.5rem] w-full bg-yellow-500 resize-none outline-none overflow-clip placeholder:text-gray-600 text-black'
-            placeholder='short summary of your fuckup...'
-            maxLength={138}
-            rows={8}
-            onChange={(val) =>
-              setNote((n) => ({ ...n, preview: val.target.value }))
-            }
-            required={true}
-          />
-        </div>
+      <h1 className='text-4xl text-center text-white mt-5'>
+        What&apos;s your story?
+      </h1>
+      <div className='relative h-[calc(100vh-300px)] w-full'>
+        <Draw
+          onSaveProject={(app) => {
+            app.saveProject();
+          }}
+          autofocus={true}
+          onMount={handleMount}
+        ></Draw>
       </div>
-      <h1 className='text-4xl'>What&apos;s your full story?</h1>
-      <textarea
-        className='w-full bg-white border-2 border-gray-300 shadow-lg px-3 py-2 rounded-lg focus:outline-none focus:border-indigo-500 text-black'
-        //className='w-full outline-none border-2 placeholder:text-gray-600'
-        placeholder='It was a calm and sunny day, when I decided to sell my Bitcoins for 11 USD a piece.'
-        rows={10}
-        onChange={(val) =>
-          setNote((n) => ({ ...n, content: val.target.value }))
-        }
-        required={true}
-      />
       <button
         type='submit'
-        onClick={submitNote}
+        onClick={() => {
+          board.current?.saveProject();
+        }}
         className='p-2 pl-5 pr-5 transition-colors duration-700 transform bg-indigo-500 hover:bg-blue-400 text-gray-100 text-lg rounded-lg focus:border-4 border-indigo-300'
       >
         Submit my story

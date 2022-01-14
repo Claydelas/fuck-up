@@ -14,7 +14,5 @@ datasource db {
 model Note {
   id Int @id @default(autoincrement())
   preview String
-  content String?
-  canvas String?
-  approved Boolean @default(false)
+  content String
 }
