@@ -40,7 +40,7 @@ export default function ApprovePage({ notes }: { notes: ParsedNote[] }) {
         visibleNotes.map((note: ParsedNote) => {
           return (
             <div key={note.id} className='flex gap-5 items-center'>
-              <StickyNote note={note} />
+              <StickyNote>{note.preview}</StickyNote>
               <button
                 type='submit'
                 onClick={(e) => approve(e, note)}

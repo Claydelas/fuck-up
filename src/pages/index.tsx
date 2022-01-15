@@ -16,20 +16,13 @@ function Home({ notes }: { notes: ParsedNote[] }) {
 
   const handleMount = useCallback((state: TldrawApp) => {
     app.current = state;
+    state.setSetting('isDebugMode', false);
+    state.toggleGrid();
   }, []);
 
-  const [modalContent, setModalContent] = useState<HTMLDivElement>();
-
-  useResizeObserver<HTMLDivElement>({
-    ref: modalContent,
-    onResize: ({ width, height }) => {
-      if (!width || !height) return;
-      if (width < 400 || height < 400) {
-        app.current?.zoomToFit();
-      } else {
-        app.current?.resetZoom();
-        app.current?.zoomToContent();
-      }
+  const { ref } = useResizeObserver<HTMLDivElement>({
+    onResize: () => {
+      app.current?.zoomToFit();
     },
   });
 
@@ -48,12 +41,13 @@ function Home({ notes }: { notes: ParsedNote[] }) {
         {notes.map((e, idx) => (
           <StickyNote
             key={idx}
-            note={e}
             onClick={() => {
               setOpenNote(e);
               setIsOpen(true);
             }}
-          />
+          >
+            {e.preview}
+          </StickyNote>
         ))}
       </div>
       {typeof window !== 'undefined' && (
@@ -64,22 +58,13 @@ function Home({ notes }: { notes: ParsedNote[] }) {
           onRequestClose={closeModal}
           overlayClassName='fixed top-14 right-0 left-0 bottom-0 flex items-center justify-center px-14 backdrop-blur-sm'
           className='h-[calc(100vh-300px)] w-full max-w-4xl mx-auto'
-          contentRef={(node) => setModalContent(node)}
           onAfterOpen={() =>
             setTimeout(() => {
-              if (!modalContent) return;
-              if (
-                modalContent.clientWidth < 400 ||
-                modalContent.clientHeight < 400
-              ) {
-                app.current?.zoomToFit();
-              } else {
-                app.current?.zoomToContent();
-              }
+              app.current?.zoomToFit();
             }, 1)
           }
         >
-          <div className='relative h-full w-full board-wrapper'>
+          <div className='relative h-full w-full board-wrapper' ref={ref}>
             <Tldraw
               document={openNote?.content?.document}
               readOnly

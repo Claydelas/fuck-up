@@ -10,7 +10,7 @@ export default function Layout({ children }: { children: ReactElement }) {
 
   return (
     <div className='min-h-screen'>
-      <nav className='fixed w-full z-10 backdrop-blur bg-gradient-to-b from-pastel-pink to-pastel-yellow-200 flex h-14 items-center justify-center'>
+      <nav className='fixed w-full z-10 backdrop-blur bg-gradient-to-b from-pastel-pink to-pastel-yellow-200 flex h-14 items-center justify-center rounded-bl-xl rounded-br-xl'>
         <div className='flex justify-between w-full max-w-4xl px-10'>
           <Link href='/'>
             <a className='flex'>

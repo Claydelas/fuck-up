@@ -7,11 +7,10 @@ export type ParsedNote = {
   content: TDFile;
 } & Omit<Note, 'content'>;
 
-type StickyNoteProps = {
-  note: ParsedNote;
-} & HTMLProps<HTMLDivElement>;
-
-export default function StickyNote({ note, ...props }: StickyNoteProps) {
+export default function StickyNote({
+  children,
+  ...props
+}: HTMLProps<HTMLDivElement>) {
   const [skew, setSkew] = useState('rounded-br-peel');
 
   useEffect(() => {
@@ -24,7 +23,7 @@ export default function StickyNote({ note, ...props }: StickyNoteProps) {
         <GrLocationPin className={`scale-110 rotate-45`} />
       </div>
       <div className='flex-grow centered'>
-        <div className='note-content'>{note.preview}</div>
+        <div className='note-content'>{children}</div>
       </div>
     </div>
   );
