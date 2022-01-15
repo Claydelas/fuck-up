@@ -14,5 +14,6 @@ datasource db {
 model Note {
   id Int @id @default(autoincrement())
   preview String
-  content String
+  content String @db.Text
+  approved Boolean @default(false)
 }

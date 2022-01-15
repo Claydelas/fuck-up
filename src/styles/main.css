@@ -18,4 +18,25 @@
   .centered {
     @apply flex items-center justify-center;
   }
+
+  .board-wrapper > div:first-child {
+    @apply rounded-xl;
+  }
+
+  .basic-button {
+    @apply h-min p-2 pl-5 pr-5 transition-colors duration-700 transform bg-indigo-500 hover:bg-blue-400 text-gray-100 text-lg rounded-lg focus:border-4 border-indigo-300;
+  }
+}
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 400ms linear;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
 }

@@ -1,10 +1,17 @@
-import { useEffect, useState } from 'react';
+import { HTMLProps, useEffect, useState } from 'react';
 import type { Note } from '@prisma/client';
 import { GrLocationPin } from 'react-icons/gr';
+import type { TDFile } from '@claydelas/tldraw';
 
-export type OptionalNote = Pick<Note, 'preview'> & Partial<Note>;
+export type ParsedNote = {
+  content: TDFile;
+} & Omit<Note, 'content'>;
 
-export default function StickyNote({ note }: { note: OptionalNote }) {
+type StickyNoteProps = {
+  note: ParsedNote;
+} & HTMLProps<HTMLDivElement>;
+
+export default function StickyNote({ note, ...props }: StickyNoteProps) {
   const [skew, setSkew] = useState('rounded-br-peel');
 
   useEffect(() => {
@@ -12,7 +19,7 @@ export default function StickyNote({ note }: { note: OptionalNote }) {
   }, []);
 
   return (
-    <div className={`note ${skew}`}>
+    <div className={`note ${skew}`} {...props}>
       <div className='stickytop'>
         <GrLocationPin className={`scale-110 rotate-45`} />
       </div>
