@@ -1,6 +1,4 @@
 import { ReactElement } from 'react';
-import Image from 'next/image';
-import logo from '/public/fuck-up-logo.png';
 import { signIn, useSession } from 'next-auth/react';
 import { FcGoogle } from 'react-icons/fc';
 import Link from 'next/link';
@@ -11,10 +9,12 @@ export default function Layout({ children }: { children: ReactElement }) {
   return (
     <div className='min-h-screen'>
       <nav className='fixed w-full z-10 backdrop-blur bg-gradient-to-b from-pastel-pink to-pastel-yellow-200 flex h-14 items-center justify-center rounded-bl-xl rounded-br-xl'>
-        <div className='flex justify-between w-full max-w-4xl px-10'>
+        <div className='flex justify-between w-full max-w-4xl sm:px-10 px-5'>
           <Link href='/'>
-            <a className='flex'>
-              <Image src={logo} alt='logo' className='invert' />
+            <a className='font-bold font-["Arial"] text-xl leading-5 min-w-fit self-center'>
+              F<span className='text-[#e88e03]'>*</span>CK UP
+              <br />
+              NIGHT
             </a>
           </Link>
           <div className='flex items-center text-xl gap-5'>
