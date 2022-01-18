@@ -59,7 +59,7 @@ export default function NewNote() {
   }
 
   return (
-    <div className='flex flex-col gap-5 py-5 px-2 min-h-[calc(100vh-3.5rem)]'>
+    <div className='flex flex-col gap-5 pt-5 pb-20 sm:pb-5 px-2 min-h-[calc(100vh-3.5rem)]'>
       <Seo />
       <h1 className='text-4xl text-center text-white'>
         What&apos;s your story?
@@ -68,7 +68,7 @@ export default function NewNote() {
         <Draw disableAssets autofocus={true} onMount={handleMount}></Draw>
       </div>
       <button type='submit' onClick={openModal} className='basic-button'>
-        Submit my story
+        Looks good, post it!
       </button>
       {typeof window !== 'undefined' && (
         <Modal
@@ -77,13 +77,15 @@ export default function NewNote() {
           shouldCloseOnEsc
           onRequestClose={closeModal}
           overlayClassName='fixed top-14 right-0 left-0 bottom-0 flex items-center justify-center px-14 backdrop-blur-sm'
-          className='flex flex-col max-w-4xl mx-auto items-center justify-center gap-5'
+          className='flex flex-col max-w-4xl mx-auto items-center justify-center gap-4'
         >
-          <h1 className='text-2xl'>Preview</h1>
+          <h1 className='text-2xl bg-[#202023] text-white w-full text-center p-2 rounded-md'>
+            In summary, I...
+          </h1>
           <StickyNote>
             <textarea
               className='w-full resize-none outline-none placeholder:text-gray-500 bg-transparent text-center line-clamp-6 !overflow-clip'
-              placeholder='Short summary of your fuckup...'
+              placeholder='Short summary of your f*ckup...'
               maxLength={200}
               rows={6}
               autoFocus

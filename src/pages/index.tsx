@@ -90,7 +90,7 @@ export const getStaticProps: GetStaticProps = async () => {
         content: JSON.parse(decompressFromBase64(note.content) ?? ''),
       })),
     },
-    revalidate: 10,
+    revalidate: 5,
   };
 };
 

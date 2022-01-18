@@ -13,7 +13,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@claydelas/tldraw": "^1.5.2",
+    "@claydelas/tldraw": "^1.5.2-a",
     "@prisma/client": "^3.7.0",
     "lz-string": "^1.4.4",
     "next": "^12.0.8",

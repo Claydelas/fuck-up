@@ -17,17 +17,21 @@ export default function Layout({ children }: { children: ReactElement }) {
               NIGHT
             </a>
           </Link>
-          <div className='flex items-center text-xl gap-5'>
-            <button>
+          <div className='flex items-center text-xl leading-5 gap-5 pl-5 underline-offset-2'>
+            <button className='hover:underline'>
               <Link href='/new'>Submit a Story</Link>
             </button>
             {session ? (
               <>
-                {session.user?.admin && <Link href='/approve'>Approve</Link>}
+                {session.user?.admin && (
+                  <button className='hover:underline'>
+                    <Link href='/approve'>Approve</Link>
+                  </button>
+                )}
                 <h1>{session.user?.name}</h1>
               </>
             ) : (
-              <button>
+              <button className='hover:underline'>
                 <FcGoogle size={28} onClick={() => signIn('google')} />
               </button>
             )}

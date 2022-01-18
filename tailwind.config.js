@@ -9,9 +9,11 @@ module.exports = {
         },
         'pastel-pink': '#facfe2',
         'note-shadow': '#a5a173',
+        dark: '#202023',
       },
       fontFamily: {
         note: 'Reenie Beanie',
+        fira: 'Fira Sans',
       },
       borderRadius: {
         peel: '60px 5px',

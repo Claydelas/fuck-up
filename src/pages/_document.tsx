@@ -14,10 +14,14 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang='en' className='bg-[#202023]'>
+      <Html lang='en' className='bg-dark font-fira'>
         <Head>
           <link
             href='https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap'
+            rel='stylesheet'
+          />
+          <link
+            href='https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap'
             rel='stylesheet'
           />
         </Head>
