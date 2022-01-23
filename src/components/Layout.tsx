@@ -11,7 +11,7 @@ export default function Layout({ children }: { children: ReactElement }) {
       <nav className='fixed w-full z-10 backdrop-blur bg-gradient-to-b from-pastel-pink to-pastel-yellow-200 flex h-14 items-center justify-center rounded-bl-xl rounded-br-xl'>
         <div className='flex justify-between w-full max-w-4xl sm:px-10 px-5'>
           <Link href='/'>
-            <a className='font-bold font-["Arial"] text-xl leading-5 min-w-fit self-center'>
+            <a className='font-bold text-xl leading-5 min-w-fit self-center'>
               F<span className='text-[#e88e03]'>*</span>CK UP
               <br />
               NIGHT
@@ -22,14 +22,11 @@ export default function Layout({ children }: { children: ReactElement }) {
               <Link href='/new'>Submit a Story</Link>
             </button>
             {session ? (
-              <>
-                {session.user?.admin && (
-                  <button className='hover:underline'>
-                    <Link href='/approve'>Approve</Link>
-                  </button>
-                )}
-                <h1>{session.user?.name}</h1>
-              </>
+              session.user?.admin && (
+                <button className='hover:underline'>
+                  <Link href='/approve'>Approve</Link>
+                </button>
+              )
             ) : (
               <button className='hover:underline'>
                 <FcGoogle size={28} onClick={() => signIn('google')} />

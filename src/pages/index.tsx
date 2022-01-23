@@ -3,10 +3,11 @@ import Seo from '../components/Seo';
 import mock from '../../mock/data';
 import StickyNote, { ParsedNote } from '../components/StickyNote';
 import prisma from '../lib/db';
-import { GetStaticProps } from 'next';
-import { useCallback, useRef, useState } from 'react';
+import { GetServerSideProps } from 'next';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useResizeObserver from 'use-resize-observer';
 import { Tldraw, TldrawApp } from '@claydelas/tldraw';
+import debounce from 'lodash/debounce';
 
 import Modal from 'react-modal';
 Modal.setAppElement('#__next');
@@ -14,15 +15,29 @@ Modal.setAppElement('#__next');
 function Home({ notes }: { notes: ParsedNote[] }) {
   const app = useRef<TldrawApp>();
 
+  const [loading, setLoading] = useState(true);
+
   const handleMount = useCallback((state: TldrawApp) => {
     app.current = state;
     state.setSetting('isDebugMode', false);
     state.toggleGrid();
+    setTimeout(() => setLoading(false), 10);
   }, []);
+
+  const debouncedZoom = useMemo(
+    () => debounce(() => app.current?.zoomToFit(), 500),
+    [app]
+  );
+
+  useEffect(() => {
+    return () => {
+      debouncedZoom.cancel();
+    };
+  }, [debouncedZoom]);
 
   const { ref } = useResizeObserver<HTMLDivElement>({
     onResize: () => {
-      app.current?.zoomToFit();
+      if (!loading) debouncedZoom();
     },
   });
 
@@ -78,7 +93,7 @@ function Home({ notes }: { notes: ParsedNote[] }) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const notes =
     process.env.NODE_ENV !== 'production'
       ? mock
@@ -90,7 +105,6 @@ export const getStaticProps: GetStaticProps = async () => {
         content: JSON.parse(decompressFromBase64(note.content) ?? ''),
       })),
     },
-    revalidate: 5,
   };
 };
 
