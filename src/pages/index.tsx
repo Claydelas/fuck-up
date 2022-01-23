@@ -1,10 +1,8 @@
 import { decompressFromBase64 } from 'lz-string';
 import Seo from '../components/Seo';
 import StickyNote, { ParsedNote } from '../components/StickyNote';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import useResizeObserver from 'use-resize-observer';
+import { useCallback, useRef, useState } from 'react';
 import { Tldraw, TldrawApp } from '@claydelas/tldraw';
-import debounce from 'lodash/debounce';
 import { Note } from '@prisma/client';
 import useSWR from 'swr';
 
@@ -24,31 +22,11 @@ function Home() {
 
   const { data } = useSWR('/api/notes', fetchNotes);
 
-  const [loading, setLoading] = useState(true);
-
   const handleMount = useCallback((state: TldrawApp) => {
     app.current = state;
     state.setSetting('isDebugMode', false);
     state.toggleGrid();
-    setTimeout(() => setLoading(false), 10);
   }, []);
-
-  const debouncedZoom = useMemo(
-    () => debounce(() => app.current?.zoomToFit(), 500),
-    [app]
-  );
-
-  useEffect(() => {
-    return () => {
-      debouncedZoom.cancel();
-    };
-  }, [debouncedZoom]);
-
-  const { ref } = useResizeObserver<HTMLDivElement>({
-    onResize: () => {
-      if (!loading) debouncedZoom();
-    },
-  });
 
   const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -86,10 +64,10 @@ function Home() {
           onAfterOpen={() =>
             setTimeout(() => {
               app.current?.zoomToFit();
-            }, 1)
+            }, 50)
           }
         >
-          <div className='relative h-full w-full board-wrapper' ref={ref}>
+          <div className='relative h-full w-full board-wrapper'>
             <Tldraw
               document={openNote?.content?.document}
               readOnly
