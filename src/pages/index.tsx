@@ -1,19 +1,28 @@
 import { decompressFromBase64 } from 'lz-string';
 import Seo from '../components/Seo';
-import mock from '../../mock/data';
 import StickyNote, { ParsedNote } from '../components/StickyNote';
-import prisma from '../lib/db';
-import { GetServerSideProps } from 'next';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useResizeObserver from 'use-resize-observer';
 import { Tldraw, TldrawApp } from '@claydelas/tldraw';
 import debounce from 'lodash/debounce';
+import { Note } from '@prisma/client';
+import useSWR from 'swr';
 
 import Modal from 'react-modal';
 Modal.setAppElement('#__next');
 
-function Home({ notes }: { notes: ParsedNote[] }) {
+const fetchNotes = async (url: string) => {
+  const notes: Note[] = (await fetch(url).then((r) => r.json())).notes;
+  return notes.map((note) => ({
+    ...note,
+    content: JSON.parse(decompressFromBase64(note.content) ?? ''),
+  }));
+};
+
+function Home() {
   const app = useRef<TldrawApp>();
+
+  const { data } = useSWR('/api/notes', fetchNotes);
 
   const [loading, setLoading] = useState(true);
 
@@ -53,17 +62,18 @@ function Home({ notes }: { notes: ParsedNote[] }) {
     <div className='flex items-center flex-col gap-10 py-10'>
       <Seo />
       <div className='w-full grid grid-cols-[repeat(auto-fit,_minmax(13rem,_max-content))] justify-center gap-5'>
-        {notes.map((e, idx) => (
-          <StickyNote
-            key={idx}
-            onClick={() => {
-              setOpenNote(e);
-              setIsOpen(true);
-            }}
-          >
-            {e.preview}
-          </StickyNote>
-        ))}
+        {data &&
+          data.map((e, idx) => (
+            <StickyNote
+              key={idx}
+              onClick={() => {
+                setOpenNote(e);
+                setIsOpen(true);
+              }}
+            >
+              {e.preview}
+            </StickyNote>
+          ))}
       </div>
       {typeof window !== 'undefined' && (
         <Modal
@@ -92,20 +102,5 @@ function Home({ notes }: { notes: ParsedNote[] }) {
     </div>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const notes =
-    process.env.NODE_ENV !== 'production'
-      ? mock
-      : await prisma.note.findMany({ where: { approved: true } });
-  return {
-    props: {
-      notes: notes.map((note) => ({
-        ...note,
-        content: JSON.parse(decompressFromBase64(note.content) ?? ''),
-      })),
-    },
-  };
-};
 
 export default Home;
